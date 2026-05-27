@@ -3,7 +3,7 @@ import random
 
 st.set_page_config(page_title="DebunkOS", page_icon="🧠", layout="wide")
 
-st.title("🧠 DebunkOS // Logical Fallacy & Fact Analyzer")
+st.title(" DebunkOS // Logical Fallacy & Fact Analyzer")
 st.caption("System Framework v1.0.0 — Deconstruct bad arguments instantly.")
 
 # Layout Columns
