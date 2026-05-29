@@ -1,56 +1,64 @@
 import streamlit as st
-import random
+import pandas as pd
+from datetime import datetime
 
-st.set_page_config(page_title="DebunkOS", page_icon="🧠", layout="wide")
+# 1. Page Configuration
+st.set_page_config(page_title="Econ Club 2027 Hub", page_icon="📈", layout="wide")
 
-st.title(" DebunkOS // Logical Fallacy & Fact Analyzer")
-st.caption("System Framework v1.0.0 — Deconstruct bad arguments instantly.")
+st.title("📈 Econ Club 2027 // Workspace")
+st.caption("Transforming chat chaos into economic insights.")
 
-# Layout Columns
-col1, col2 = st.columns([1, 1])
+# Initialize session state for data persistence if they don't exist
+if "ideas" not in st.session_state:
+    st.session_state.ideas = [
+        {"Topic": "Gas price surge mechanics", "Category": "Macroeconomics", "Votes": 3},
+        {"Topic": "Gatorade shrinkflation (14oz to 12oz)", "Category": "Consumer Behavior", "Votes": 5}
+    ]
 
+# 2. Layout Distribution
+col1, col2 = st.columns([1.2, 1.0])
+
+# ==========================================
+# LEFT COLUMN: BRAINSTORMING & TOPICS
+# ==========================================
 with col1:
-    st.subheader("📥 Input Argument Data")
-    claim_text = st.text_area(
-        "Paste the headline, tweet, or quote you want to dissect:", 
-        placeholder="Example: 'Everyone says this new law will ruin the economy, so it must be stopped!'"
-    )
+    st.subheader("💡 Submit a Real-World Econ Topic")
     
-    bias_level = st.slider("Suspected Sensationalism Level", 0, 100, 50)
-    analyze_button = st.button("⚡ Run Dissection Protocol", type="primary")
+    with st.form("topic_form", clear_on_submit=True):
+        new_topic = st.text_area("What real-world event should we analyze?", 
+                                 placeholder="e.g., Why did Gatorade change their bottle size without dropping the price?")
+        category = st.selectbox("Economic Category", ["Macroeconomics", "Microeconomics/Pricing", "Global Trade", "Fiscal Policy"])
+        submit_button = st.form_submit_button("Queue Topic")
+        
+        if submit_button and new_topic:
+            st.session_state.ideas.append({"Topic": new_topic, "Category": category, "Votes": 1})
+            st.success("Topic added to the discussion queue!")
 
+    st.write("---")
+    st.subheader("📊 Current Topic Queue")
+    # Convert session state to DataFrame for clean display
+    df_ideas = pd.DataFrame(st.session_state.ideas)
+    st.dataframe(df_ideas, use_container_width=True)
+
+# ==========================================
+# RIGHT COLUMN: SCHEDULING & AVAILABILITY
+# ==========================================
 with col2:
-    st.subheader("📊 Analytical Output")
+    st.subheader("🗓️ Member Availability Matrix")
+    st.write("Select the times you are free this coming weekend:")
     
-    if analyze_button and claim_text:
-        # Fun calculation logic using the input data
-        length_factor = len(claim_text) % 30
-        truth_score = max(5, min(95, 100 - bias_level - length_factor + random.randint(-10, 10)))
-        
-        # Display the major metric
-        st.metric(label="Calculated Truth Probability", value=f"{truth_score}%")
-        
-        if truth_score < 40:
-            st.error("🚨 HIGH LOGICAL INFIDELITY DETECTED")
-        elif truth_score < 70:
-            st.warning("⚠️ PROBABLE SENSATIONALISM OR BIAS PRESENT")
-        else:
-            st.success("✅ ARGUMENT PASSES BASELINE LOGICAL CONSISTENCY")
-            
-        # Fallacy Breakdown System
-        st.write("### 🔍 Detected Fallacies & Logical Vulnerabilities")
-        
-        fallacies = []
-        if "Everyone" in claim_text or "always" in claim_text.lower() or "never" in claim_text.lower():
-            fallacies.append(("Bandwagon / Hasty Generalization", "Appealing to common belief or making an absolute claim without sufficient statistical samples."))
-        if "ruin" in claim_text.lower() or "destroy" in claim_text.lower() or "kill" in claim_text.lower():
-            fallacies.append(("Appeal to Emotion (Fear)", "Using highly charged language to manipulate emotional responses instead of presenting valid evidence."))
-            
-        if not fallacies:
-            fallacies.append(("None explicitly triggered via string matches", "Try using words like 'Everyone', 'always', 'never', or 'ruin' to trigger the pattern matching matrix."))
-
-        for name, desc in fallacies:
-            with st.expander(f"❌ {name}"):
-                st.write(desc)
-    else:
-        st.info("Awaiting execution protocol. Input data into Column 1 and click 'Run Dissection Protocol'.")
+    # Simple form for group members to log availability
+    member_name = st.selectbox("Who are you?", ["hotdog", "seer12351", "tthatg", "Goobert", "insidechaosis"])
+    
+    sat_free = st.checkbox("Saturday (Anytime)")
+    sun_early = st.checkbox("Sunday Morning/Afternoon")
+    sun_late = st.checkbox("Sunday Night (Late Sunday)")
+    
+    save_sched = st.button("Save My Schedule", type="primary")
+    
+    st.write("---")
+    st.subheader("🎯 Optimal Meeting Window")
+    # Custom alert logic to resolve conflicts based on chat data
+    if tthatg_out_of_town_or_similar := True: 
+        st.warning("⚠️ Notice: Multiple members noted they are out of town until Late Sunday.")
+        st.info("💡 **Recommended Window:** Sunday Night after 7:00 PM looks optimal for maximum attendance.")
