@@ -152,7 +152,7 @@ with col2:
     out_of_town_mems = [name for name, sched in st.session_state.schedules.items() if not sched["Sat"] and not sched["Sun_Early"]]
     
     if out_of_town_mems:
-        st.warning(f"**NOTICE:** {', '.join(out_of_town_mems)} flagged conflict/out-of-town metrics for early weekend windows.")
+        st.warning(f"**NOTICE:** {', '.join(out_of_town_mems)} are in danger rn so can't rly join the early weekend meetups.")
     
     slots = {"Saturday": sat_count, "Sunday Morning/Afternoon": sun_e_count, "Sunday Night": sun_l_count}
     best_slot = max(slots, key=slots.get)
