@@ -161,7 +161,7 @@ with col2:
     if max_count == 0:
         st.info("Awaiting availability inputs. Check blocks above to calculate consensus.")
     else:
-        st.success(f"**Recommended Window:** **{best_slot}** ({max_count}/{total_members} members verified free!)")
+        st.success(f"**Recommended Window:** **{best_slot}** bc ({max_count}/{total_members} members verified free)")
 
 # ==========================================
 # FOOTER: SECRET ADMIN DASHBOARD
