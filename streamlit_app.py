@@ -70,7 +70,7 @@ button[data-testid="baseButton-primary"]:hover {{
 st.markdown(custom_styles_css, unsafe_allow_html=True)
 
 # --- APP HEADER ---
-st.title("Econ Club 2027 // Workspace")
+st.title("Econ Club 2027 Workspace")
 st.caption("Transforming chat chaos into economic insights or wtv")
 
 # --- PERSISTENT DATA WAREHOUSE (Session State) ---
