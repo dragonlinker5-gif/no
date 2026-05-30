@@ -37,7 +37,6 @@ h1 {{
     font-family: 'Inter', 'Helvetica Neue', sans-serif;
     font-weight: 800 !important;
     letter-spacing: -0.5px;
-    /* EDIT THESE HEX CODES TO CHANGE THE TITLE GRADIENT FLOW */
     background: linear-gradient(45deg, #ffffff, #e0f2fe, #bae6fd);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -53,20 +52,19 @@ h1 {{
 }}
 
 /* --- 🔹 FORCE ALL ACTION/FORM BUTTONS TO CYAN 🔹 --- */
-/* This targets standard primary buttons AND form submission buttons simultaneously */
 button[data-testid="baseButton-primary"], 
-button[data-testid="baseButton-formSubmit"] {
+button[data-testid="baseButton-formSubmit"] {{
     background-color: #00b4d8 !important;  /* Clean Cyan Hex */
     color: #ffffff !important;             /* Crisp white text */
     border-radius: 8px !important;         /* Smooth rounded edges */
     border: none !important;
     font-weight: 600 !important;
-}
+}}
 
 button[data-testid="baseButton-primary"]:hover,
-button[data-testid="baseButton-formSubmit"]:hover {
+button[data-testid="baseButton-formSubmit"]:hover {{
     background-color: #0077b6 !important;  /* Deeper oceanic blue on cursor hover */
-}
+}}
 </style>
 """
 
@@ -135,7 +133,6 @@ with col2:
     sun_early = st.checkbox("Sunday Morning/Afternoon", value=current_mem["Sun_Early"])
     sun_late = st.checkbox("Sunday Night (Late Sunday)", value=current_mem["Sun_Late"])
     
-    # This button will use our new bright green primary button styling rules from above!
     if st.button("Save My Schedule", type="primary"):
         st.session_state.schedules[member_name] = {
             "Sat": sat_free,
@@ -178,8 +175,6 @@ with st.expander("🔒 Developer Access Portal"):
         st.success("Authorized Operator Access Granted.")
         st.write("### 🛠️ Workspace Clean up Utilities")
         
-        # --- HOW TO ADD IMAGES ACCORDING TO YOUR NEEDS ---
-        # Instead of drag-dropping, you drop a direct web link right into native Python commands:
         st.image("https://i.imgflip.com/65efzo.jpg", caption="Live view of club admins clearing the queue", width=350)
         
         if st.session_state.ideas:
