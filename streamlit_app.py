@@ -4,13 +4,9 @@ from datetime import datetime
 
 # 1. Page Configuration
 st.set_page_config(page_title="Econ Club 2027 Hub", page_icon="📈", layout="wide")
-import streamlit as st
 
-# ... your existing page config ...
-
-# --- ANIMATED BACKGROUND INJECTION ---
-# Replace 'YOUR_IMAGE_URL_HERE' with a direct link to your background image.
-# For local files, it's best to host them online (Imgur, GitHub, etc.) or use base64 encoding.
+# --- ANIMATED BACKGROUND & TITLE CSS INJECTION ---
+# Replace with a direct link to your custom background image if needed.
 BG_IMAGE_URL = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe" 
 
 animated_bg_css = f"""
@@ -32,7 +28,7 @@ animated_bg_css = f"""
     content: "";
     position: absolute;
     top: 0; left: 0; width: 100%; height: 100%;
-    background-color: rgba(14, 17, 23, 0.75); /* Dark tint overlay (adjust transparency here) */
+    background-color: rgba(14, 17, 23, 0.4); /* Reduced slightly to let your background shine through! */
     z-index: -1;
 }}
 
@@ -44,13 +40,9 @@ animated_bg_css = f"""
         background-position: center 100%, center 0%;
     }}
 }}
-</style>
-"""
 
-# Inject the CSS into the app layout securely
-st.markdown(animated_bg_css, unsafe_allow_html=True)
 /* --- MAKING THE TITLE POP --- */
-h1 {
+h1 {{
     font-family: 'Inter', 'Helvetica Neue', sans-serif;
     font-weight: 800 !important; /* Extra bold */
     letter-spacing: -0.5px;
@@ -61,17 +53,24 @@ h1 {
     -webkit-text-fill-color: transparent;
     
     /* Add drop shadow so it stands out against bright background spots */
-    filter: drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.3));
+    filter: drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.5));
     
     padding-bottom: 5px;
-}
+}}
 
-/* Optional: Make the caption underneath slightly brighter and sharper */
-[data-testid="stCaptionContainer"] {
+/* Make the caption underneath slightly brighter and sharper */
+[data-testid="stCaptionContainer"] {{
     color: #f1f5f9 !important;
     font-weight: 500;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
-}
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+}}
+</style>
+"""
+
+# Inject the combined CSS into the app layout securely
+st.markdown(animated_bg_css, unsafe_allow_html=True)
+
+# --- APP HEADER ---
 st.title("📈 Econ Club 2027 // Workspace")
 st.caption("Transforming chat chaos into economic insights.")
 
@@ -105,27 +104,4 @@ with col1:
     st.subheader("📊 Current Topic Queue")
     # Convert session state to DataFrame for clean display
     df_ideas = pd.DataFrame(st.session_state.ideas)
-    st.dataframe(df_ideas, use_container_width=True)
-
-# ==========================================
-# RIGHT COLUMN: SCHEDULING & AVAILABILITY
-# ==========================================
-with col2:
-    st.subheader("🗓️ Member Availability Matrix")
-    st.write("Select the times you are free this coming weekend:")
-    
-    # Simple form for group members to log availability
-    member_name = st.selectbox("Who are you?", ["hotdog", "seer12351", "tthatg", "Goobert", "insidechaosis"])
-    
-    sat_free = st.checkbox("Saturday (Anytime)")
-    sun_early = st.checkbox("Sunday Morning/Afternoon")
-    sun_late = st.checkbox("Sunday Night (Late Sunday)")
-    
-    save_sched = st.button("Save My Schedule", type="primary")
-    
-    st.write("---")
-    st.subheader("🎯 Optimal Meeting Window")
-    # Custom alert logic to resolve conflicts based on chat data
-    if tthatg_out_of_town_or_similar := True: 
-        st.warning("⚠️ Notice: Multiple members noted they are out of town until Late Sunday.")
-        st.info("💡 **Recommended Window:** Sunday Night after 7:00 PM looks optimal for maximum attendance.")
+    st.dataframe(
