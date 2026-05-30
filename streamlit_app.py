@@ -51,7 +51,16 @@ h1 {{
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
 }}
 
+/* --- ☑️ FIX FOR "WHEN ARE U FREE?" CHECKBOX TEXT ☑️ --- */
+[data-testid="stCheckbox"] label p {{
+    color: #f1f5f9 !important;             
+    font-weight: 600 !important;           
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8), 
+                 0px 0px 8px rgba(0, 0, 0, 0.9) !important; 
+}}
+
 /* --- 🔹 FORCE ALL ACTION/FORM BUTTONS TO CYAN 🔹 --- */
+div[data-testid="stFormSubmitButton"] button,
 button[data-testid="baseButton-primary"], 
 button[data-testid="baseButton-formSubmit"] {{
     background-color: #00b4d8 !important;  /* Clean Cyan Hex */
@@ -59,11 +68,14 @@ button[data-testid="baseButton-formSubmit"] {{
     border-radius: 8px !important;         /* Smooth rounded edges */
     border: none !important;
     font-weight: 600 !important;
+    box-shadow: 0px 4px 10px rgba(0, 180, 216, 0.3) !important;
 }}
 
+div[data-testid="stFormSubmitButton"] button:hover,
 button[data-testid="baseButton-primary"]:hover,
 button[data-testid="baseButton-formSubmit"]:hover {{
     background-color: #0077b6 !important;  /* Deeper oceanic blue on cursor hover */
+    box-shadow: 0px 6px 15px rgba(0, 119, 182, 0.5) !important;
 }}
 </style>
 """
@@ -129,9 +141,9 @@ with col2:
     
     current_mem = st.session_state.schedules.get(member_name, {"Sat": False, "Sun_Early": False, "Sun_Late": False})
     
-    sat_free = st.checkbox("Saturday (Anytime)", value=current_mem["Sat"])
-    sun_early = st.checkbox("Sunday Morning/Afternoon", value=current_mem["Sun_Early"])
-    sun_late = st.checkbox("Sunday Night (Late Sunday)", value=current_mem["Sun_Late"])
+    sat_free = st.checkbox("Saturday (Anytime)", value=current_mem.get("Sat", False))
+    sun_early = st.checkbox("Sunday Morning/Afternoon", value=current_mem.get("Sun_Early", False))
+    sun_late = st.checkbox("Sunday Night (Late Sunday)", value=current_mem.get("Sun_Late", False))
     
     if st.button("Save My Schedule", type="primary"):
         st.session_state.schedules[member_name] = {
@@ -146,11 +158,11 @@ with col2:
     st.subheader("Best time/day to meet")
     
     total_members = len(st.session_state.schedules)
-    sat_count = sum(1 for m in st.session_state.schedules.values() if m["Sat"])
-    sun_e_count = sum(1 for m in st.session_state.schedules.values() if m["Sun_Early"])
-    sun_l_count = sum(1 for m in st.session_state.schedules.values() if m["Sun_Late"])
+    sat_count = sum(1 for m in st.session_state.schedules.values() if m.get("Sat", False))
+    sun_e_count = sum(1 for m in st.session_state.schedules.values() if m.get("Sun_Early", False))
+    sun_l_count = sum(1 for m in st.session_state.schedules.values() if m.get("Sun_Late", False))
     
-    out_of_town_mems = [name for name, sched in st.session_state.schedules.items() if not sched["Sat"] and not sched["Sun_Early"]]
+    out_of_town_mems = [name for name, sched in st.session_state.schedules.items() if not sched.get("Sat", False) and not sched.get("Sun_Early", False)]
     
     if out_of_town_mems:
         st.warning(f"**NOTICE:** {', '.join(out_of_town_mems)} are in danger rn so can't rly join the early weekend meetups.")
