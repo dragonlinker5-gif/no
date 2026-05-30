@@ -82,7 +82,7 @@ with col1:
     st.subheader("Submit real world econ Topic")
     
     with st.form("topic_form", clear_on_submit=True):
-        new_topic = st.text_area("What real-world event should we analyze?", 
+        new_topic = st.text_area("What real world event do we look at??", 
                                  placeholder="e.g., Why did Gatorade change their bottle size without dropping the price?")
         category = st.selectbox("Economic Category", ["Macroeconomics", "Microeconomics/Pricing", "Global Trade", "Fiscal Policy"])
         submit_button = st.form_submit_button("Queue Topic")
