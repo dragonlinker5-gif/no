@@ -116,11 +116,11 @@ with col2:
     # Pre-populate checkboxes if the member has already submitted data
     current_mem = st.session_state.schedules.get(member_name, {"Sat": False, "Sun_Early": False, "Sun_Late": False})
     
-    sat_free = st.checkbox("Saturday (Anytime)", value=current_mem["Sat"])
-    sun_early = st.checkbox("Sunday Morning/Afternoon", value=current_mem["Sun_Early"])
-    sun_late = st.checkbox("Sunday Night (Late Sunday)", value=current_mem["Sun_Late"])
+    sat_free = st.checkbox("Saturday (whenever u can)", value=current_mem["Sat"])
+    sun_early = st.checkbox("Sunday morning or afternoon", value=current_mem["Sun_Early"])
+    sun_late = st.checkbox("Late Sunday", value=current_mem["Sun_Late"])
     
-    if st.button("Save My Schedule", type="primary"):
+    if st.button("Save **MY** Schedule", type="primary"):
         st.session_state.schedules[member_name] = {
             "Sat": sat_free,
             "Sun_Early": sun_early,
