@@ -5,10 +5,10 @@ from datetime import datetime
 # 1. Page Configuration
 st.set_page_config(page_title="The Econ Club 2027 Hub", page_icon="🤑", layout="wide")
 
-# --- ANIMATED BACKGROUND & TITLE CSS INJECTION ---
+# --- ANIMATED BACKGROUND & CUSTOM STYLES INJECTION ---
 BG_IMAGE_URL = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnwZjOUvmLdeSQGGLKyUHBHwDQvP4relaiQA&s" 
 
-animated_bg_css = f"""
+custom_styles_css = f"""
 <style>
 [data-testid="stAppViewContainer"] {{
     background-image: url("{BG_IMAGE_URL}"), url("{BG_IMAGE_URL}");
@@ -32,11 +32,12 @@ animated_bg_css = f"""
     100% {{ background-position: center 100%, center 0%; }}
 }}
 
-/* --- MAKING THE TITLE POP --- */
+/* --- TITLE GRADIENT COLOR --- */
 h1 {{
     font-family: 'Inter', 'Helvetica Neue', sans-serif;
     font-weight: 800 !important;
     letter-spacing: -0.5px;
+    /* EDIT THESE HEX CODES TO CHANGE THE TITLE GRADIENT FLOW */
     background: linear-gradient(45deg, #ffffff, #e0f2fe, #bae6fd);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -50,11 +51,23 @@ h1 {{
     font-weight: 500;
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
 }}
+
+/* --- 🟩 CUSTOM COLOR EXAMPLE: CHANGER FOR THE 'SAVE MY SCHEDULE' BUTTON 🟩 --- */
+/* Target Streamlit's primary form buttons */
+button[data-testid="baseButton-primary"] {{
+    background-color: #22c55e !important;  /* Bright green hex */
+    color: #ffffff !important;             /* White text */
+    border-radius: 8px !important;         /* Rounded corners */
+    border: none !important;
+}}
+button[data-testid="baseButton-primary"]:hover {{
+    background-color: #16a34a !important;  /* Darker green when hovering over it */
+}}
 </style>
 """
 
 # Inject the combined CSS styles securely
-st.markdown(animated_bg_css, unsafe_allow_html=True)
+st.markdown(custom_styles_css, unsafe_allow_html=True)
 
 # --- APP HEADER ---
 st.title("Econ Club 2027 // Workspace")
@@ -68,11 +81,10 @@ if "ideas" not in st.session_state:
     ]
 
 if "schedules" not in st.session_state:
-    # Set default dummy schedule data based on your Discord text logs!
     st.session_state.schedules = {
         "hotdog": {"Sat": False, "Sun_Early": False, "Sun_Late": False},
         "seer12351": {"Sat": True, "Sun_Early": True, "Sun_Late": True},
-        "tthatg": {"Sat": False, "Sun_Early": False, "Sun_Late": True}, # Out of town until late Sunday
+        "tthatg": {"Sat": False, "Sun_Early": False, "Sun_Late": True}, 
         "Goobert": {"Sat": True, "Sun_Early": True, "Sun_Late": True},
         "insidechaosis": {"Sat": True, "Sun_Early": True, "Sun_Late": True}
     }
@@ -113,14 +125,14 @@ with col2:
     
     member_name = st.selectbox("Who ares yous?", ["hotdog", "seer12351", "tthatg", "Goobert", "insidechaosis"])
     
-    # Pre-populate checkboxes if the member has already submitted data
     current_mem = st.session_state.schedules.get(member_name, {"Sat": False, "Sun_Early": False, "Sun_Late": False})
     
-    sat_free = st.checkbox("Saturday (whenever u can)", value=current_mem["Sat"])
-    sun_early = st.checkbox("Sunday morning or afternoon", value=current_mem["Sun_Early"])
-    sun_late = st.checkbox("Late Sunday", value=current_mem["Sun_Late"])
+    sat_free = st.checkbox("Saturday (Anytime)", value=current_mem["Sat"])
+    sun_early = st.checkbox("Sunday Morning/Afternoon", value=current_mem["Sun_Early"])
+    sun_late = st.checkbox("Sunday Night (Late Sunday)", value=current_mem["Sun_Late"])
     
-    if st.button("Save **MY** Schedule", type="primary"):
+    # This button will use our new bright green primary button styling rules from above!
+    if st.button("Save My Schedule", type="primary"):
         st.session_state.schedules[member_name] = {
             "Sat": sat_free,
             "Sun_Early": sun_early,
@@ -132,20 +144,16 @@ with col2:
     st.write("---")
     st.subheader("Best time/day to meet")
     
-    # --- AUTOMATIC CALCULATION ENGINE ---
-    # Total up how free everyone is across slots
     total_members = len(st.session_state.schedules)
     sat_count = sum(1 for m in st.session_state.schedules.values() if m["Sat"])
     sun_e_count = sum(1 for m in st.session_state.schedules.values() if m["Sun_Early"])
     sun_l_count = sum(1 for m in st.session_state.schedules.values() if m["Sun_Late"])
     
-    # Check if there is an active crunch/conflict
     out_of_town_mems = [name for name, sched in st.session_state.schedules.items() if not sched["Sat"] and not sched["Sun_Early"]]
     
     if out_of_town_mems:
         st.warning(f"**NOTICE:** {', '.join(out_of_town_mems)} flagged conflict/out-of-town metrics for early weekend windows.")
     
-    # Pick the mathematically best slot
     slots = {"Saturday": sat_count, "Sunday Morning/Afternoon": sun_e_count, "Sunday Night": sun_l_count}
     best_slot = max(slots, key=slots.get)
     max_count = slots[best_slot]
@@ -160,11 +168,15 @@ with col2:
 # ==========================================
 st.write("---")
 with st.expander("🔒 Developer Access Portal"):
-    password = st.text_input("Enter Admin Override Credential Token:", type="password")
+    password = st.text_input("Enter Euler's Number to 15 Decimal Places:", type="password")
     
     if password == "2.718281828459045":
         st.success("Authorized Operator Access Granted.")
         st.write("### 🛠️ Workspace Clean up Utilities")
+        
+        # --- HOW TO ADD IMAGES ACCORDING TO YOUR NEEDS ---
+        # Instead of drag-dropping, you drop a direct web link right into native Python commands:
+        st.image("https://i.imgflip.com/65efzo.jpg", caption="Live view of club admins clearing the queue", width=350)
         
         if st.session_state.ideas:
             topic_options = [item["Topic"] for item in st.session_state.ideas]
@@ -177,4 +189,4 @@ with st.expander("🔒 Developer Access Portal"):
         else:
             st.info("No active topics to wipe out.")
     elif password != "":
-        st.error("Invalid Credential Token. Access Denied.")
+        st.error("Incorrect Value. Exponential growth validation failed.")
