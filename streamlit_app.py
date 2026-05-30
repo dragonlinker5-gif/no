@@ -3,11 +3,11 @@ import pandas as pd
 from datetime import datetime
 
 # 1. Page Configuration
-st.set_page_config(page_title="Econ Club 2027 Hub", page_icon="📈", layout="wide")
+st.set_page_config(page_title="The Econ Club 2027 Hub", page_icon="🤑🤑🤑", layout="wide")
 
 # --- ANIMATED BACKGROUND & TITLE CSS INJECTION ---
 # Using the Unsplash abstract gradient backdrop URL
-BG_IMAGE_URL = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe" 
+BG_IMAGE_URL = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOAyEQ6tsIxYgodGTsQRbMftpGLtAKDxoVEg&s" 
 
 animated_bg_css = f"""
 <style>
@@ -62,7 +62,7 @@ h1 {{
 st.markdown(animated_bg_css, unsafe_allow_html=True)
 
 # --- APP HEADER ---
-st.title("📈 Econ Club 2027 // Workspace")
+st.title("Econ Club 2027 // Workspace")
 st.caption("Transforming chat chaos into economic insights.")
 
 # Initialize session state for data persistence if they don't exist
@@ -79,7 +79,7 @@ col1, col2 = st.columns([1.2, 1.0])
 # LEFT COLUMN: BRAINSTORMING & TOPICS
 # ==========================================
 with col1:
-    st.subheader("💡 Submit a Real-World Econ Topic")
+    st.subheader("Submit real world econ Topic")
     
     with st.form("topic_form", clear_on_submit=True):
         new_topic = st.text_area("What real-world event should we analyze?", 
@@ -92,7 +92,7 @@ with col1:
             st.success("Topic added to the discussion queue!")
 
     st.write("---")
-    st.subheader("📊 Current Topic Queue")
+    st.subheader("Topic waiting line")
     df_ideas = pd.DataFrame(st.session_state.ideas)
     st.dataframe(df_ideas, use_container_width=True)
 
@@ -100,7 +100,7 @@ with col1:
 # RIGHT COLUMN: SCHEDULING & AVAILABILITY
 # ==========================================
 with col2:
-    st.subheader("🗓️ Member Availability Matrix")
+    st.subheader("When are u free?")
     st.write("Select the times you are free this coming weekend:")
     
     member_name = st.selectbox("Who are you?", ["hotdog", "seer12351", "tthatg", "Goobert", "insidechaosis"])
@@ -112,7 +112,7 @@ with col2:
     save_sched = st.button("Save My Schedule", type="primary")
     
     st.write("---")
-    st.subheader("🎯 Optimal Meeting Window")
+    st.subheader("Best time/day to meet")
     
     if tthatg_out_of_town_or_similar := True: 
         st.warning("⚠️ Notice: Multiple members noted they are out of town until Late Sunday.")
