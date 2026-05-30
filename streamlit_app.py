@@ -3,10 +3,9 @@ import pandas as pd
 from datetime import datetime
 
 # 1. Page Configuration
-st.set_page_config(page_title="The Econ Club 2027 Hub", page_icon="🤑🤑🤑", layout="wide")
+st.set_page_config(page_title="The Econ Club 2027 Hub", page_icon="🤑", layout="wide")
 
 # --- ANIMATED BACKGROUND & TITLE CSS INJECTION ---
-# Using the Unsplash abstract gradient backdrop URL
 BG_IMAGE_URL = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnwZjOUvmLdeSQGGLKyUHBHwDQvP4relaiQA&s" 
 
 animated_bg_css = f"""
@@ -29,12 +28,8 @@ animated_bg_css = f"""
 }}
 
 @keyframes scrollBackground {{
-    0% {{
-        background-position: center 0%, center -100%;
-    }}
-    100% {{
-        background-position: center 100%, center 0%;
-    }}
+    0% {{ background-position: center 0%, center -100%; }}
+    100% {{ background-position: center 100%, center 0%; }}
 }}
 
 /* --- MAKING THE TITLE POP --- */
@@ -65,12 +60,22 @@ st.markdown(animated_bg_css, unsafe_allow_html=True)
 st.title("Econ Club 2027 // Workspace")
 st.caption("Transforming chat chaos into economic insights or wtv")
 
-# Initialize session state for data persistence if they don't exist
+# --- PERSISTENT DATA WAREHOUSE (Session State) ---
 if "ideas" not in st.session_state:
     st.session_state.ideas = [
         {"Topic": "Gas price surge mechanics", "Category": "Macroeconomics", "Votes": 3},
         {"Topic": "Gatorade shrinkflation (14oz to 12oz)", "Category": "Consumer Behavior", "Votes": 5}
     ]
+
+if "schedules" not in st.session_state:
+    # Set default dummy schedule data based on your Discord text logs!
+    st.session_state.schedules = {
+        "hotdog": {"Sat": False, "Sun_Early": False, "Sun_Late": False},
+        "seer12351": {"Sat": True, "Sun_Early": True, "Sun_Late": True},
+        "tthatg": {"Sat": False, "Sun_Early": False, "Sun_Late": True}, # Out of town until late Sunday
+        "Goobert": {"Sat": True, "Sun_Early": True, "Sun_Late": True},
+        "insidechaosis": {"Sat": True, "Sun_Early": True, "Sun_Late": True}
+    }
 
 # 2. Layout Distribution
 col1, col2 = st.columns([1.2, 1.0])
@@ -89,12 +94,15 @@ with col1:
         
         if submit_button and new_topic:
             st.session_state.ideas.append({"Topic": new_topic, "Category": category, "Votes": 1})
-            st.success("Topic added to the discussion queue!")
+            st.rerun()
 
     st.write("---")
     st.subheader("Topic waiting line")
-    df_ideas = pd.DataFrame(st.session_state.ideas)
-    st.dataframe(df_ideas, use_container_width=True)
+    if st.session_state.ideas:
+        df_ideas = pd.DataFrame(st.session_state.ideas)
+        st.dataframe(df_ideas, use_container_width=True)
+    else:
+        st.info("The waiting line is clear! Type an economic anomaly above to populate.")
 
 # ==========================================
 # RIGHT COLUMN: SCHEDULING & AVAILABILITY
@@ -105,15 +113,68 @@ with col2:
     
     member_name = st.selectbox("Who ares yous?", ["hotdog", "seer12351", "tthatg", "Goobert", "insidechaosis"])
     
-    sat_free = st.checkbox("Saturday (Anytime)")
-    sun_early = st.checkbox("Sunday Morning/Afternoon")
-    sun_late = st.checkbox("Sunday Night (Late Sunday)")
+    # Pre-populate checkboxes if the member has already submitted data
+    current_mem = st.session_state.schedules.get(member_name, {"Sat": False, "Sun_Early": False, "Sun_Late": False})
     
-    save_sched = st.button("Save My Schedule", type="primary")
+    sat_free = st.checkbox("Saturday (Anytime)", value=current_mem["Sat"])
+    sun_early = st.checkbox("Sunday Morning/Afternoon", value=current_mem["Sun_Early"])
+    sun_late = st.checkbox("Sunday Night (Late Sunday)", value=current_mem["Sun_Late"])
+    
+    if st.button("Save My Schedule", type="primary"):
+        st.session_state.schedules[member_name] = {
+            "Sat": sat_free,
+            "Sun_Early": sun_early,
+            "Sun_Late": sun_late
+        }
+        st.success(f"Schedule recorded for {member_name}!")
+        st.rerun()
     
     st.write("---")
     st.subheader("Best time/day to meet")
     
-    if tthatg_out_of_town_or_similar := True: 
-        st.warning("**EMERGENCY:** Multiple members noted they are out of town until Late Sunday.")
-        st.warning("**Recommended Window:** Sunday Night after 7:00 PM looks optimal for maximum attendance.")
+    # --- AUTOMATIC CALCULATION ENGINE ---
+    # Total up how free everyone is across slots
+    total_members = len(st.session_state.schedules)
+    sat_count = sum(1 for m in st.session_state.schedules.values() if m["Sat"])
+    sun_e_count = sum(1 for m in st.session_state.schedules.values() if m["Sun_Early"])
+    sun_l_count = sum(1 for m in st.session_state.schedules.values() if m["Sun_Late"])
+    
+    # Check if there is an active crunch/conflict
+    out_of_town_mems = [name for name, sched in st.session_state.schedules.items() if not sched["Sat"] and not sched["Sun_Early"]]
+    
+    if out_of_town_mems:
+        st.warning(f"**NOTICE:** {', '.join(out_of_town_mems)} flagged conflict/out-of-town metrics for early weekend windows.")
+    
+    # Pick the mathematically best slot
+    slots = {"Saturday": sat_count, "Sunday Morning/Afternoon": sun_e_count, "Sunday Night": sun_l_count}
+    best_slot = max(slots, key=slots.get)
+    max_count = slots[best_slot]
+    
+    if max_count == 0:
+        st.info("Awaiting availability inputs. Check blocks above to calculate consensus.")
+    else:
+        st.success(f"**Recommended Window:** **{best_slot}** ({max_count}/{total_members} members verified free!)")
+
+# ==========================================
+# FOOTER: SECRET ADMIN DASHBOARD
+# ==========================================
+st.write("---")
+with st.expander("🔒 Developer Access Portal"):
+    password = st.text_input("Enter Admin Override Credential Token:", type="password")
+    
+    if password == "econ2027":
+        st.success("Authorized Operator Access Granted.")
+        st.write("### 🛠️ Workspace Clean up Utilities")
+        
+        if st.session_state.ideas:
+            topic_options = [item["Topic"] for item in st.session_state.ideas]
+            target_deletion = st.selectbox("Select target topic to erase from database:", topic_options)
+            
+            if st.button("Execute Targeted Wipeout", type="secondary"):
+                st.session_state.ideas = [i for i in st.session_state.ideas if i["Topic"] != target_deletion]
+                st.toast(f"Wiped topic: {target_deletion}")
+                st.rerun()
+        else:
+            st.info("No active topics to wipe out.")
+    elif password != "":
+        st.error("Invalid Credential Token. Access Denied.")
