@@ -168,7 +168,7 @@ with col2:
 # ==========================================
 st.write("---")
 with st.expander("🔒 Developer Access Portal"):
-    password = st.text_input("Enter Euler's Number to 15 Decimal Places:", type="password")
+    password = st.text_input("Gabriel's favorite first 15 Decimal Places:", type="password")
     
     if password == "2.718281828459045":
         st.success("Authorized Operator Access Granted.")
