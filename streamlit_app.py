@@ -49,6 +49,29 @@ animated_bg_css = f"""
 
 # Inject the CSS into the app layout securely
 st.markdown(animated_bg_css, unsafe_allow_html=True)
+/* --- MAKING THE TITLE POP --- */
+h1 {
+    font-family: 'Inter', 'Helvetica Neue', sans-serif;
+    font-weight: 800 !important; /* Extra bold */
+    letter-spacing: -0.5px;
+    
+    /* Create a vibrant text gradient matching your background */
+    background: linear-gradient(45deg, #ffffff, #e0f2fe, #bae6fd);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    
+    /* Add drop shadow so it stands out against bright background spots */
+    filter: drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.3));
+    
+    padding-bottom: 5px;
+}
+
+/* Optional: Make the caption underneath slightly brighter and sharper */
+[data-testid="stCaptionContainer"] {
+    color: #f1f5f9 !important;
+    font-weight: 500;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
 st.title("📈 Econ Club 2027 // Workspace")
 st.caption("Transforming chat chaos into economic insights.")
 
