@@ -4,7 +4,51 @@ from datetime import datetime
 
 # 1. Page Configuration
 st.set_page_config(page_title="Econ Club 2027 Hub", page_icon="📈", layout="wide")
+import streamlit as st
 
+# ... your existing page config ...
+
+# --- ANIMATED BACKGROUND INJECTION ---
+# Replace 'YOUR_IMAGE_URL_HERE' with a direct link to your background image.
+# For local files, it's best to host them online (Imgur, GitHub, etc.) or use base64 encoding.
+BG_IMAGE_URL = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe" 
+
+animated_bg_css = f"""
+<style>
+[data-testid="stAppViewContainer"] {{
+    background-image: url("{BG_IMAGE_URL}"), url("{BG_IMAGE_URL}");
+    background-repeat: repeat-y;
+    background-size: 100% 200%; /* Stretches them to be tall */
+    
+    /* Mixes positions so one starts exactly above the other */
+    background-position: center 0px, center -100%; 
+    
+    /* Calls the animation loop below */
+    animation: scrollBackground 20s linear infinite;
+}}
+
+/* Ensure the main container content stays readable over an animation */
+[data-testid="stAppViewContainer"]::before {{
+    content: "";
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(14, 17, 23, 0.75); /* Dark tint overlay (adjust transparency here) */
+    z-index: -1;
+}}
+
+@keyframes scrollBackground {{
+    0% {{
+        background-position: center 0%, center -100%;
+    }}
+    100% {{
+        background-position: center 100%, center 0%;
+    }}
+}}
+</style>
+"""
+
+# Inject the CSS into the app layout securely
+st.markdown(animated_bg_css, unsafe_allow_html=True)
 st.title("📈 Econ Club 2027 // Workspace")
 st.caption("Transforming chat chaos into economic insights.")
 
