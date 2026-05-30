@@ -104,4 +104,4 @@ with col1:
     st.subheader("📊 Current Topic Queue")
     # Convert session state to DataFrame for clean display
     df_ideas = pd.DataFrame(st.session_state.ideas)
-    st.dataframe(
+    st.dataframe()
