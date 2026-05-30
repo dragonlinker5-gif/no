@@ -52,18 +52,17 @@ h1 {{
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
 }}
 
-/* --- 🔹 CUSTOM COLOR CHANGOR: CYAN BUTTON 🔹 --- */
-button[data-testid="baseButton-primary"] {
-    background-color: #00b4d8 !important;  /* Clean Cyan Hex */
-    color: #ffffff !important;             /* Crisp white text */
-    border-radius: 8px !important;         /* Smooth rounded edges */
+/* --- 🟩 CUSTOM COLOR EXAMPLE: CHANGER FOR THE 'SAVE MY SCHEDULE' BUTTON 🟩 --- */
+/* Target Streamlit's primary form buttons */
+button[data-testid="baseButton-primary"] {{
+    background-color: #22c55e !important;  /* Bright green hex */
+    color: #ffffff !important;             /* White text */
+    border-radius: 8px !important;         /* Rounded corners */
     border: none !important;
-    font-weight: 600 !important;
-}
-
-button[data-testid="baseButton-primary"]:hover {
-    background-color: #0077b6 !important;  /* Deeper oceanic blue on cursor hover */
-}
+}}
+button[data-testid="baseButton-primary"]:hover {{
+    background-color: #16a34a !important;  /* Darker green when hovering over it */
+}}
 </style>
 """
 
