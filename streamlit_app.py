@@ -7,7 +7,7 @@ st.set_page_config(page_title="The Econ Club 2027 Hub", page_icon="🤑🤑🤑"
 
 # --- ANIMATED BACKGROUND & TITLE CSS INJECTION ---
 # Using the Unsplash abstract gradient backdrop URL
-BG_IMAGE_URL = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOAyEQ6tsIxYgodGTsQRbMftpGLtAKDxoVEg&s" 
+BG_IMAGE_URL = "https://unsplash.com/photos/a-textured-green-background-with-horizontal-lines-WPS6N8uHWeU" 
 
 animated_bg_css = f"""
 <style>
