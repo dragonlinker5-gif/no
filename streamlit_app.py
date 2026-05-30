@@ -63,7 +63,7 @@ st.markdown(animated_bg_css, unsafe_allow_html=True)
 
 # --- APP HEADER ---
 st.title("Econ Club 2027 // Workspace")
-st.caption("Transforming chat chaos into economic insights.")
+st.caption("Transforming chat chaos into economic insights or wtv")
 
 # Initialize session state for data persistence if they don't exist
 if "ideas" not in st.session_state:
@@ -101,9 +101,9 @@ with col1:
 # ==========================================
 with col2:
     st.subheader("When are u free?")
-    st.write("Select the times you are free this coming weekend:")
+    st.write("Select the times you are free this coming weekend NOW:")
     
-    member_name = st.selectbox("Who are you?", ["hotdog", "seer12351", "tthatg", "Goobert", "insidechaosis"])
+    member_name = st.selectbox("Who ares yous?", ["hotdog", "seer12351", "tthatg", "Goobert", "insidechaosis"])
     
     sat_free = st.checkbox("Saturday (Anytime)")
     sun_early = st.checkbox("Sunday Morning/Afternoon")
@@ -115,5 +115,5 @@ with col2:
     st.subheader("Best time/day to meet")
     
     if tthatg_out_of_town_or_similar := True: 
-        st.warning("⚠️ Notice: Multiple members noted they are out of town until Late Sunday.")
-        st.info("💡 **Recommended Window:** Sunday Night after 7:00 PM looks optimal for maximum attendance.")
+        st.warning("**EMERGENCY:** Multiple members noted they are out of town until Late Sunday.")
+        st.warning("**Recommended Window:** Sunday Night after 7:00 PM looks optimal for maximum attendance.")
