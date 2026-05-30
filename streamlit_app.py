@@ -162,7 +162,7 @@ st.write("---")
 with st.expander("🔒 Developer Access Portal"):
     password = st.text_input("Enter Admin Override Credential Token:", type="password")
     
-    if password == "econ2027":
+    if password == "2.718281828459045":
         st.success("Authorized Operator Access Granted.")
         st.write("### 🛠️ Workspace Clean up Utilities")
         
